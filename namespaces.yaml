@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fabric
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jan
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: feb

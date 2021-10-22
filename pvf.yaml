@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-fabric-0
+  labels:
+    type: local
+spec:
+  # A PV of a particular class can only be bound to PVCs requesting that class
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/volf

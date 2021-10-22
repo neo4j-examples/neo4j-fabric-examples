@@ -1,0 +1,120 @@
+neo4j/neo4j-standalone
+
+
+#Get the helm defaults to create a file
+helm show values neo4j/neo4j-standalone
+
+#Copy paste to create fabric.yaml
+
+helm show values neo4j/neo4j-standalone > params.yaml
+
+
+#Instruction here does not work, need a storage class https://neo4j.com/docs/operations-manual/current/kubernetes/helm-charts-setup/
+
+
+
+#Create a second namespace
+kubectl apply -f namespaces.yaml
+
+#minikube ssh
+#create the directory /tmp/vol1
+mkdir /tmp/vol1
+chmod 777 /tmp/vol1
+#create the directory /tmp/vol2
+mkdir /tmp/vol1
+chmod 777 /tmp/vol2
+mkdir /tmp/volf
+chmod 777 /tmp/volf
+
+#create the pvs in each of the namespaces
+kubectl apply -f pv1.yaml -n jan
+kubectl apply -f pv2.yaml -n feb
+kubectl apply -f pvf.yaml -n fabric
+
+#create pvc in the namespaces
+kubectl apply -f pvc1.yaml -n jan 
+kubectl apply -f pvc2.yaml -n feb
+kubectl apply -f pvcf.yaml -n fabric
+
+#check they are bound
+kubectl describe pvc -n jan 
+kubectl describe pvc -n feb
+kubectl describe pvc -n fabric
+
+#Install helm releases of neo4j in to the different namespaces
+#Default namespace of the kluster
+helm install jan neo4j/neo4j-standalone -f jan.yaml -n jan 
+#check to make sure it is being deployed
+kubectl describe pods -n jan
+
+#Fabric namespace that have created in the kluster
+helm install feb neo4j/neo4j-standalone -f fabric.yaml -n feb
+kubectl describe pods -n feb
+
+helm install fabric neo4j/neo4j-standalone -f fabric.yaml -n fabric
+kubectl describe pods -n fabric
+
+
+kubectl run --rm -it --namespace "jan" --image "neo4j:4.3.5-enterprise" cypher-shell -- cypher-shell -a "neo4j://jan.jan.svc.cluster.local:7687" -u neo4j -p "nn330044jj"
+
+
+kubectl run --rm -it --namespace "feb" --image "neo4j:4.3.5-enterprise" cypher-shell  -- cypher-shell -a "neo4j://feb.feb.svc.cluster.local:7687" -u neo4j -p "nn330044ff"
+create (n:feb) return n;
+
+kubectl run --rm -it --namespace "fabric" --image "neo4j:4.3.5-enterprise" cypher-shell -- cypher-shell -a "neo4j://fabric.fabric.svc.cluster.local:7687" -u neo4j -p "nn330044fa"
+
+
+#look at release running in default namespace
+helm list
+#look at release running in jan  namespace
+helm list -n jan 
+
+
+
+
+#In PoSH
+while (1) {kubectl get all; sleep 5}
+
+
+C:\Users\james\Documents\GitHub\fabric> kubectl run --rm -it --image "neo4j:4.3.5" cypher-shell -- cypher-shell -a "neo4j://jan.jan.svc.cluster.local:7687" -u neo4j -p "nn330044jj"
+
+
+#check you can access them all within the cluster
+
+Once rollout is complete you can log in to Neo4j at "neo4j://fabric.default.svc.cluster.local:7687". Try:
+
+  $ kubectl run --rm -it --image "neo4j:4.3.5-enterprise" cypher-shell \
+     -- cypher-shell -a "neo4j://fabric.default.svc.cluster.local:7687" -u neo4j -p "nn330044jj"
+
+ kubectl run --rm -it --image "neo4j:4.3.5-enterprise" cypher-shell \
+     -- cypher-shell -a "neo4j://fabric.default.svc.cluster.local:7687" -u neo4j -p "nn330044jj"
+
+
+
+
+       $ kubectl run --rm -it --image "neo4j:4.3.5-enterprise" cypher-shell \
+     -- cypher-shell -a "neo4j://fabric.default.svc.cluster.local:7687" -u neo4j -p "nn330044jj"
+
+
+#now access from localhost
+minikube tunnel
+
+#check you can access fabric on the localhost using standard ports
+
+##Need to create a new loadbalancer with modified settings because you cant set them in the values yaml file because there are no variables defined
+
+#apply the custom loadbalancers
+kubectl apply -f loadbalancer-jan.yaml -n jan
+## to access from out side start the tunnel - use a separate shell to run this
+kubectl apply -f loadbalancer-feb.yaml  -n feb
+
+#delete the loadbalancers created by helm charts
+kubectl delete svc jan-neo4j -n jan
+kubectl delete svc feb-neo4j -n feb
+#when you login be sure to change the port for bolt as well!!!
+
+
+helm uninstall fabric -n fabric
+helm uninstall feb -n feb
+helm uninstall jan -n jan
+
