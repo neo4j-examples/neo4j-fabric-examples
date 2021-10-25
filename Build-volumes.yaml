@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-jan-0
+  namespace: jan
+  labels:
+    type: local
+spec:
+  # A PV of a particular class can only be bound to PVCs requesting that class
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/vol1
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-jan-0
+  namespace: jan
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-feb-0
+  namespace: feb
+  labels:
+    type: local
+spec:
+  # A PV of a particular class can only be bound to PVCs requesting that class
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/vol2
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-feb-0
+  namespace: feb
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-fabric-0
+  namespace: fabric
+  labels:
+    type: local
+spec:
+  # A PV of a particular class can only be bound to PVCs requesting that class
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/volf
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-fabric-0
+  namespace: fabric
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

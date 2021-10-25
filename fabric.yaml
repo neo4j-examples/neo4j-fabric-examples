@@ -6,7 +6,7 @@ neo4j:
   name: ""
 
   # If password is not set or empty a random password will be generated during installation
-  password: "nn330044fa"
+  password: "nn330044jj"
 
   # Neo4j Edition to use (community|enterprise)
   edition: "enterprise"
@@ -179,8 +179,10 @@ config:
   fabric.database.name: "year"
   fabric.graph.1.uri: "neo4j://jan.jan.svc.cluster.local:7687"
   fabric.graph.1.database: "neo4j"
+  fabric.graph.1.name: "jan"
   fabric.graph.2.uri: "neo4j://feb.feb.svc.cluster.local:7687"
   fabric.graph.2.database: "neo4j"
+  fabric.graph.2.name: "feb"
 
 # securityContext defines privilege and access control settings for a Pod or Container. Making sure that we dont run Neo4j as root user.
 securityContext:
