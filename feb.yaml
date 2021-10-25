@@ -6,7 +6,7 @@ neo4j:
   name: ""
 
   # If password is not set or empty a random password will be generated during installation
-  password: "nn330044ff"
+  password: "nn330044jj"
 
   # Neo4j Edition to use (community|enterprise)
   edition: "enterprise"
