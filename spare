@@ -1,0 +1,15 @@
+#create the pvs in each of the namespaces
+#kubectl apply -f pv1.yaml -n jan
+#kubectl apply -f pv2.yaml -n feb
+#kubectl apply -f pvf.yaml -n fabric
+
+#create pvc in the namespaces
+#kubectl apply -f pvc1.yaml -n jan 
+#kubectl apply -f pvc2.yaml -n feb
+#kubectl apply -f pvcf.yaml -n fabric
+
+
+#apply the custom loadbalancers
+kubectl apply -f loadbalancer-jan.yaml -n jan
+## to access from out side start the tunnel - use a separate shell to run this
+kubectl apply -f loadbalancer-feb.yaml  -n feb

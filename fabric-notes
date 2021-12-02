@@ -1,0 +1,45 @@
+Error when querying non fabric database
+Dynamic graph lookup not allowed here. This feature is only available in a Fabric database
+Attempted to access graph year.graph(1)
+"USE year.graph(1)"
+
+
+Passwords for Neo4j need to be the same across the fabric environment
+
+The client is unauthorized due to authentication failure.
+
+
+
+You must specify labels that exist. If you dont 
+
+Selecting JVM - Version:11.0.13, Name:OpenJDK 64-Bit Server VM, Vendor:Oracle Corporation
+Starting to copy store, output will be saved to: /logs/neo4j-admin-copy-2021-11-24.20.00.08.log
+There was a problem during copy.
+
+You have probably forgotten to create the labels, all labels must exist - yes the command output is alarming!
+
+
+Database doesnt start after creation -- have you copied the data as ROOT? Make sure NEO4j user
+
+## Database "shard8" is unavailable, its status is "offline".
+### will start after you have restarted neo4j?
+
+You cant query fabric if the targets dont exist
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (n)
+  RETURN n  AS title
+}
+RETURN title
+Unable to get a routing table for database 'shard7' because this database does not exist
+
+
+For an Aura database
+Remote execution failed with code N/A and message 'Could not perform discovery for database 'neo4j'. No routing server available.'
+
+
+Connection to the database terminated. Please ensure that your database is listening on the correct host and port and that you have compatible encryption settings both on Neo4j server and driver. Note that the default encryption setting has changed in Neo4j 4.0.
+
+
+cant back up database

@@ -1,0 +1,35 @@
+Given this is just a function - Can we provide a fabric function for unique id that can be used?
+
+
+Can you have multiple versions of neo4j within a fabric? (obviously the cypher code would have to be valid across all members ie. lowest common denominator)
+Think so docs say
+"Database compatibility
+Fabric is part of Neo4j DBMS and does not require any special installation or plugin. Fabric graphs can be associated to databases available on Neo4j DBMS version 4.1 or greater, including AuraDB."
+
+
+Security credentials
+The Neo4j DBMSs that host the same Fabric virtual database must have the same user credentials. Any change of password on a machine that is part of Fabric, must be kept in-sync and applied to all the Neo4j DBMSs that are part of Fabric. A minimum of READ and ACCESS privileges are required. Fabric supports RBAC, however roles and groups must be maintained across all members of the Fabric environment.
+
+Transactions in Fabric
+In Fabric, ACID compliance is guaranteed only within a single graph. This means, that the current version of Fabric does not support transactions that span across multiple graphs. To avoid common mistakes that may lead to data corruption, Fabric does not allow write operations on more than one graph within the same transaction. Transactions with queries that read from multiple graphs, or read from multiple graphs and write to a single graph, are allowed.
+
+
+Administration commands
+Fabric does not support issuing Cypher administration commands, on, or through the Fabric virtual database. Any database management commands, index and constraint management commands or user and security management commands must be issued directly to the DBMSs and databases that are part of the Fabric setup.
+
+DBMS mode
+The DBMS hosting the Fabric virtual database cannot be part of a Causal Cluster: it can only be a DBMS with dbms.mode=SINGLE.
+
+
+
+---QUESTION why doesnt this just return the date time of the max transaction, instead get a list of transactions
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (t:Transaction)
+  RETURN t.amount AS amount, t.id as id, t.dateTime as dateTime
+}
+RETURN max(amount) AS maxT, dateTime
+
+
+Do you test Fabric with many K8S pods all running the same application, each POD being dynamically created and destroyed, each calling Neo4j independently?

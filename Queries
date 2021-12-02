@@ -1,0 +1,155 @@
+--Fabric doesnt have a schema, nor does it automatically see the schema of its members
+CALL db.schema.visualization()
+
+returns empty for nodes and relationships
+
+-- You can see the schema on a named shard
+USE fabric.customer
+CALL db.schema.visualization()
+
+-- You CANT iterate through to see the schema of each
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId) 
+  CALL db.schema.visualization()
+}
+
+Procedure call inside a query does not support naming results implicitly (name explicitly using `YIELD` instead) (line 3, column 29 (offset: 73))
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  CALL db.schema.visualization() YIELD nodes, relationships
+}
+
+##Note the following queries work for the sample data set I have generated
+# The data generate creates random data so each run will be different
+# publish the sample first
+
+
+Query a single graph by ID - TESTED
+--------------------
+USE fabric.graph(1)
+MATCH (c:Customer {name:'Jennifer Sims'})-[:HAS_ADDRESS]->(a:Address)
+RETURN c.name as name, a.address AS address
+
+
+Query a single graph by name - TESTED
+--------------------
+USE fabric.customer
+MATCH (c:Customer {name:'Jennifer Sims'})-[:HAS_ADDRESS]->(a:Address)
+RETURN  c.name as name, a.address AS address
+
+Unable to expand in Browser - TESTED
+---------------------------
+USE fabric.customer
+MATCH path = (c:Customer {name:'Jennifer Sims'})-[*..2]-()
+RETURN  path
+
+Query across alls graphs /shards - TESTED
+-----------------------------
+
+- Trinity suspect a/c 00271409 of suspicious activity
+- Find Trinity accounts that are potential smurf accounts 
+- transferring funds to a suspected Trinity account 00271409
+
+-- NOTE That these are all external accounts, 
+--- a/c no format (and sort code) tell us this.
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00271409")
+  RETURN smurf.account AS smurf, t.amount AS amount, t.dateTime AS dateTime
+}
+RETURN smurf, amount, dateTime
+
+- We know Smurfs like to transfer under 10k, so we can filter out - TESTED
+- And lets look at +1k
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction WHERE t.amount < 10000 AND t.amount > 1000)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00271409")
+  RETURN smurf.account AS smurf, t.amount AS amount, t.dateTime AS dateTime
+}
+RETURN smurf, amount, dateTime
+
+- Could easily write these to a new graph suspcisious external accounts, 
+- or add to the customer's record as suspicious accounts they have transacted with
+- Flagging individual transactions would need to be handled by application logic
+-  as require a series of write transactions, one for each shard
+- cant do global transaction
+
+
+Correlated Subqueries TESTED
+-----------------------
+- Take a finding from one or more shards and apply it to find information in another shard, and perform an update
+- Trinity suspect a/c 00207637 of suspicious activity
+- Find Trinity accounts that are potential smurf accounts - transferring funds to a suspected Trinity account 00207637
+- Set suspicious 
+- return the name of the account holder, and fund transfer
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00207637")
+  RETURN smurf.account AS smurf, t.amount AS amount
+}
+CALL {
+  USE fabric.customer
+  WITH smurf
+  MATCH (c:Customer)-[:HAS_ACCOUNT]->(a:Account WHERE a.account = smurf)
+  SET c += {suspicious: 'True'}
+  RETURN c.name as smurfname
+}
+RETURN smurfname, amount
+
+USE fabric.customer
+MATCH path=(c:Customer {suspicious:'True'})-[*..2]-() 
+RETURN path
+-- Return the path to overcome the node expansion problem
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00207637")
+  RETURN smurf.account AS smurf, t.amount AS amount
+}
+CALL {
+  USE fabric.customer
+  WITH smurf
+  MATCH path=(a:Account WHERE a.account = smurf)-[:HAS_ACCOUNT]-()-[*..2]-()
+  RETURN path
+}
+RETURN path
+
+
+Query result aggregation - TESTED
+------------------------
+- From each remote graph we return the largest transaction.
+- At the end of the main query we aggregate across the full result to calculate the global maximum.
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (t:Transaction)
+  RETURN t.amount AS amount
+}
+RETURN max(amount) AS maxT
+
+
+-- Now find the transfers between 5 and 10k to a suspected account   TESTED
+- the largest payment, and the number of payments 
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (t:Transaction WHERE t.amount < 10000 AND t.amount > 5000)-[:TO_ACCOUNT]-(sus:Account WHERE sus.account = "00271409")
+  RETURN t.amount AS amount
+}
+RETURN max(amount), count(amount)
+
+
+
+ 

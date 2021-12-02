@@ -93,6 +93,10 @@ helm uninstall fabric -n fabric
 helm uninstall feb -n feb
 helm uninstall jan -n jan
 
+
+minikube cp customers.csv /import
+
+
 If you need to reset
 #NOTE you need to do this if you want to wipe your data in the pv
 minikube delete

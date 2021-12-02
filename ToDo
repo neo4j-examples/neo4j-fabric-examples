@@ -1,0 +1,61 @@
+--- Operational value of Fabric
+- Manageable data sets backup/restore
+- scale out not up
+- faster queries across TB data sets
+- trade-off is some loss of graphiness, traveral across whole graph, and expandable nodes
+- Keep full graph experience at the shard level figure out where shard size / graph value is at e.g. 3 months vs 1 month
+- transactions to latest
+
+
+-- 2x use cases
+- federated databases for fraud rings
+  -- security not an issue for this type of federation
+  - data set harder to fake (may be one for the future)
+- sharded databases for fraud structuring (focus of session)
+
+--- Explain the model --- DONE
+Create a transaction set - DONE
+Create a customer accounts set - DONE
+Import using Importer - DONE
+
+--- Migrating from a single graph to shards ---
+Do the labelling for the Shards - DONE
+Shard the transactions - DONE
+
+
+--- Setup and deploying Fabric ---
+Explain configuration - DONE
+Set up Fabric with Local PARTITIONS only config - using Docker - DONE - improved docs - 5.0 feature will be available in Cypher
+Set up Fabric with Local PARTITIONS only config - using Desktop / Browser only - DONE (re-use config from Docker)
+Set up Fabric with REMOTE databases in Kubernetes - DONE - able to demostrate and use REMOTE feature available in 4.4.x - POSSIBLY in time for GA
+
+
+--- Introduce Fabric Queries ---
+Unwind through graph ids, get some data across each shard - DONE
+
+--- Comparing the Graph vs Fabric experience ----
+Create a query to find all the accounts that a suspected fraudster has transacted with - CAN DO
+Create a fabric query to find all the accounts that a suspected fraudster has transacted with - CAN DO
+
+
+--- Pros / Cons of Starting Shard vs Starting Unsharded
+Downtime migration - copy requires off-line
+User experience gap - dont give people something then take it away
+Give them something and sell them on the future
+vs
+Starting with sharding requires a different effort in the model - need to think about where data goes
+, plus may incur higer risk in deal
+
+2x clear cases where can work
+1) transactions over time e.g. banking, potentially other time series?? - DONE
+2) federated graphs WHERE you know that the security boundary is the SAME - DONE
+
+--- Gotchas ----
+Things that may catch you out along the way, error messages etc
+
+--- Advanced Session 2 ---
+
+--- Find Fraud ---
+Create a fraudulent transaction set - NOT DONE - Q? Can I
+Create a query to find the fraud - NOT DONE - Wont be DONE
+Create a fabric query to find the fraud - NOT DONE - Unlikely

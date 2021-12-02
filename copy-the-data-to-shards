@@ -1,0 +1,25 @@
+#This is off-line - one reason worth sharding from the start
+stop database neo4j
+
+--keep-only-nodes-with-labels = these are the node labels you want to copy to a shard
+--skip-labels = dont copy the labels to the new database
+
+docker ps
+docker exec --user neo4j -it optimistic_einstein bash
+
+
+bin/neo4j-admin copy --from-database=neo4j --to-database=customer --keep-only-nodes-with-labels=CustomerShard --skip-labels=CustomerShard,Shard7,Shard8,Shard9
+
+neo4j-admin copy --from-database=neo4j --to-database=shard7 --keep-only-nodes-with-labels=Shard7 --skip-labels=CustomerShard,Shard7,Shard8,Shard9
+
+neo4j-admin copy --from-database=neo4j --to-database=shard8 --keep-only-nodes-with-labels=Shard8 --skip-labels=CustomerShard,Shard7,Shard8,Shard9
+
+neo4j-admin copy --from-database=neo4j --to-database=shard9 --keep-only-nodes-with-labels=Shard9 --skip-labels=CustomerShard,Shard7,Shard8,Shard9
+
+#Create the databases
+CREATE DATABASE shard7;
+CREATE DATABASE shard8;
+CREATE DATABASE shard9;
+CREATE DATABASE customer;
+
+
