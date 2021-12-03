@@ -25,42 +25,6 @@ SET t:Shard9, fa:Shard9, ta:Shard9
 RETURN COUNT(*);
 
 
-##Perform the copy
+##Perform the copy-the-data-to-shards
 
 
-MATCH (fa:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[ta:TO_ACCOUNT] WHERE t.dateTime STARTS WITH "2021-07" 
-RETURN COUNT(*);
-
-
-
-
-
-
-
-
-
-
-
-
-#The following is JUST the transactions
-
-#Shard by month - should be 20599 for july
-MATCH (fa:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[ta:TO_ACCOUNT] where t.dateTime starts with "2021-07" 
-SET t:Shard07
-return count(*);
-
-##4.3 syntax
-#Shard by month - should be 22251 for Aug
-MATCH (t:Transaction) where t.dateTime starts with "2021-08" 
-SET t:Shard8
-return count(*);
-
-#Shard by month - should be 21735 for Sept
-MATCH (t:Transaction) where t.dateTime starts with "2021-09" 
-SET t:Shard9
-return count(*);
-
-#Shard by month - should be 425 for Oct
-MATCH (t:Transaction) where t.dateTime starts with "2021-10" 
-SET t:Shard10
-return count(*);
