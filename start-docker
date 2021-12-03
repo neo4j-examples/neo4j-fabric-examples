@@ -1,23 +1,14 @@
-docker run -p 7474:7474 -p 7687:7687 / 
--e NEO4J_AUTH=neo4j/nn330044jj
--e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
--e NEO4J_dbms_query__cache__size=1024 neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
-
+# docker run command
 docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/nn330044jj -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes -e NEO4J_fabric_database_name=fabric -e NEO4J_fabric_graph_1_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_1_database=customer -e NEO4J_fabric_graph_1_name=customer -e NEO4J_fabric_graph_2_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_2_database=shard7 -e NEO4J_fabric_graph_2_name=july -e NEO4J_fabric_graph_3_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_3_database=shard8 -e NEO4J_fabric_graph_3_name=aug -e NEO4J_fabric_graph_4_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_4_database=shard9 -e NEO4J_fabric_graph_4_name=sept neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
 
+#to get the name of the container
+docker ps 
+
 # Ready and waiting Docker container for fabric demo if anything goes wrong
-docker start optimistic_einstein
+docker start container_name
 
 #access docker shell - always always as neo4j NOT root
-docker exec -it --user neo4j optimistic_einstein bash
-
-
-#where to find neo4j dbms example for kubernetes
-fabric.graph.1.uri: "neo4j://jan.jan.svc.cluster.local:7687"
-#the database you want to use
-fabric.graph.1.database: "shard7"
-#the name you want to refer to it as
-fabric.graph.1.name: "July"
+docker exec -it --user neo4j container_name bash
 
 
 ## DOCKER CONFIG FOR AURA
@@ -30,14 +21,6 @@ docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/nn330044jj -e NEO4J_ACC
 #docker container thirsty_cohen preped and ready for Aura
 docker start thirsty_cohen
 
-#neo4j.conf settings for Aura
-fabric.graph.0.driver.ssl_enabled=true
-dbms.ssl.policy.fabric.client_auth=OPTIONAL
-dbms.ssl.policy.fabric.trust_all=true
-dbms.ssl.policy.fabric.enabled=true
-dbms.ssl.policy.fabric.base_directory=certificates/shared
-
-
 # Run 4.3.7
 neo4j:4.3.7-enterprise
 
@@ -49,5 +32,4 @@ neo4j:4.4.0-enterprise
 
 
 
-# Doesnt seem to work - look into this
-fabric.driver.logging.level=DEBUG
+
