@@ -1,5 +1,5 @@
 # docker run command
-docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/nn330044jj -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes -e NEO4J_fabric_database_name=fabric -e NEO4J_fabric_graph_1_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_1_database=customer -e NEO4J_fabric_graph_1_name=customer -e NEO4J_fabric_graph_2_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_2_database=shard7 -e NEO4J_fabric_graph_2_name=july -e NEO4J_fabric_graph_3_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_3_database=shard8 -e NEO4J_fabric_graph_3_name=aug -e NEO4J_fabric_graph_4_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_4_database=shard9 -e NEO4J_fabric_graph_4_name=sept neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
+docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/set-password -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes -e NEO4J_fabric_database_name=fabric -e NEO4J_fabric_graph_1_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_1_database=customer -e NEO4J_fabric_graph_1_name=customer -e NEO4J_fabric_graph_2_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_2_database=shard7 -e NEO4J_fabric_graph_2_name=july -e NEO4J_fabric_graph_3_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_3_database=shard8 -e NEO4J_fabric_graph_3_name=aug -e NEO4J_fabric_graph_4_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_4_database=shard9 -e NEO4J_fabric_graph_4_name=sept neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
 
 #to get the name of the container
 docker ps 
@@ -12,7 +12,7 @@ docker exec -it --user neo4j container_name bash
 
 
 ## DOCKER CONFIG FOR AURA
-docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/nn330044jj -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes -e NEO4J_fabric_driver_logging_level=DEBUG -e NEO4J_fabric_database_name=fabric -e NEO4J_fabric_graph_0_uri=neo4j+s://ab65a865.databases.neo4j.io:7687 -e NEO4J_fabric_graph_0_database=neo4j -e NEO4J_fabric_graph_0_name=jan -e NEO4J_fabric_graph_0_driver_ssl__enabled=true -e NEO4J_dbms_ssl_policy_fabric_client__auth=OPTIONAL -e NEO4J_dbms_ssl_policy_fabric_trust__all=true -e NEO4J_dbms_ssl_policy_fabric_base__directory=certificates -e NEO4J_dbms_ssl_policy_fabric_trusted__dir=trusted -e NEO4J_dbms_ssl_policy_fabric_enabled=true neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
+docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/set-password -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes -e NEO4J_fabric_driver_logging_level=DEBUG -e NEO4J_fabric_database_name=fabric -e NEO4J_fabric_graph_0_uri=neo4j+s://ab65a865.databases.neo4j.io:7687 -e NEO4J_fabric_graph_0_database=neo4j -e NEO4J_fabric_graph_0_name=jan -e NEO4J_fabric_graph_0_driver_ssl__enabled=true -e NEO4J_dbms_ssl_policy_fabric_client__auth=OPTIONAL -e NEO4J_dbms_ssl_policy_fabric_trust__all=true -e NEO4J_dbms_ssl_policy_fabric_base__directory=certificates -e NEO4J_dbms_ssl_policy_fabric_trusted__dir=trusted -e NEO4J_dbms_ssl_policy_fabric_enabled=true neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
 
 ## the certificate directory MUST exist before you start neo4j, 
 # so in docker just used the certificates directory
