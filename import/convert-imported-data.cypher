@@ -9,4 +9,4 @@ return count(*)
 #Confirm find a transaction 
 MATCH (t:Transaction) where t.amount > 300 return count(*);
 
-#Now shard-the-transactions.cypher
+#Now use shard-the-data\shard-the-transactions.cypher

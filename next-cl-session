@@ -20,3 +20,14 @@ Do you test Fabric with many K8S pods all running the same application, each POD
 Use fabric with Aura, cut over from on prem to cloud
 - use for migration
 - use for DR
+
+
+--- Advanced Session 2 ---
+
+--- Find Fraud ---
+Create a fraudulent transaction set - NOT DONE - Q? Can I
+Create a query to find the fraud - NOT DONE - Wont be DONE
+Create a fabric query to find the fraud - NOT DONE - Unlikely
+
+- Fraud ring data set
+-synthetic and stolen identities
