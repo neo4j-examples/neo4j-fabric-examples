@@ -1,0 +1,22 @@
+Given this is just a function - Can we provide a fabric function for unique id that can be used?
+
+
+---QUESTION why doesnt this just return the date time of the max transaction, instead get a list of transactions
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (t:Transaction)
+  RETURN t.amount AS amount, t.id as id, t.dateTime as dateTime
+}
+RETURN max(amount) AS maxT, dateTime
+
+
+
+
+Do you test Fabric with many K8S pods all running the same application, each POD being dynamically created and destroyed, each calling Neo4j independently?
+- this is about restarting the fabric mach to add new instances
+
+
+Use fabric with Aura, cut over from on prem to cloud
+- use for migration
+- use for DR
