@@ -56,13 +56,15 @@ Query across alls graphs /shards - TESTED
 -- NOTE That these are all external accounts, 
 --- a/c no format (and sort code) tell us this.
 
+
 UNWIND fabric.graphIds() AS graphId
 CALL {
   USE fabric.graph(graphId)
-  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00271409")
+  MATCH (sus:Account WHERE sus.account = "00271409")-[:TO_ACCOUNT]-(t:Transaction)-[:FROM_ACCOUNT]-(smurf:Account)
   RETURN smurf.account AS smurf, t.amount AS amount, t.dateTime AS dateTime
 }
 RETURN smurf, amount, dateTime
+
 
 - We know Smurfs like to transfer under 10k, so we can filter out - TESTED
 - And lets look at +1k
@@ -70,7 +72,7 @@ RETURN smurf, amount, dateTime
 UNWIND fabric.graphIds() AS graphId
 CALL {
   USE fabric.graph(graphId)
-  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction WHERE t.amount < 10000 AND t.amount > 1000)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00271409")
+  MATCH (sus:Account WHERE sus.account = "00271409")<-[:TO_ACCOUNT]-(t:Transaction WHERE t.amount < 10000 AND t.amount > 1000)<-[:FROM_ACCOUNT]-(smurf:Account)
   RETURN smurf.account AS smurf, t.amount AS amount, t.dateTime AS dateTime
 }
 RETURN smurf, amount, dateTime
@@ -93,13 +95,13 @@ Correlated Subqueries TESTED
 UNWIND fabric.graphIds() AS graphId
 CALL {
   USE fabric.graph(graphId)
-  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00207637")
+  MATCH (sus:Account WHERE sus.account = "00207637")-[:TO_ACCOUNT]-(t:Transaction)-[:FROM_ACCOUNT]-(smurf:Account)
   RETURN smurf.account AS smurf, t.amount AS amount
 }
 CALL {
   USE fabric.customer
   WITH smurf
-  MATCH (c:Customer)-[:HAS_ACCOUNT]->(a:Account WHERE a.account = smurf)
+  MATCH (a:Account WHERE a.account = smurf)<-[:HAS_ACCOUNT]-(c:Customer)
   SET c += {suspicious: 'True'}
   RETURN c.name as smurfname
 }
@@ -113,7 +115,7 @@ RETURN path
 UNWIND fabric.graphIds() AS graphId
 CALL {
   USE fabric.graph(graphId)
-  MATCH (smurf:Account)-[:FROM_ACCOUNT]-(t:Transaction)-[:TO_ACCOUNT]->(sus:Account WHERE sus.account = "00207637")
+  MATCH (sus:Account WHERE sus.account = "00207637")<-[:TO_ACCOUNT]-(t:Transaction)-[:FROM_ACCOUNT]-(smurf:Account)
   RETURN smurf.account AS smurf, t.amount AS amount
 }
 CALL {
@@ -151,5 +153,11 @@ CALL {
 RETURN max(amount), count(amount)
 
 
-
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (sus:Account WHERE sus.account = "00271409")-[:TO_ACCOUNT]-(t:Transaction WHERE t.amount < 10000 AND t.amount > 5000)
+  RETURN t.amount AS amount
+}
+RETURN max(amount), count(amount)
  
