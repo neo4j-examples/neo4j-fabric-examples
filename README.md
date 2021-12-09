@@ -5,19 +5,22 @@ Based upon Financial Fraud use case for Trinity Bank (a simulated bank)
 Fraud type: the fraudulent structuring of transactions aka smurfing
 
 Shows you how to 
-+ Run fabric and the database shards on docker - refer to the folder docker, or kubernetes with Minikube - refer to the folder kubernetes
++ Run fabric and the database shards on docker or minikube
+	 - refer to the folder docker
+	 - or refer to folder kubernetes for doing it with Minikube (need to review instructions)
+	 - at this point fabric proxy is ready BUT you cant query because the databases DONT exist
 + The synthetic data set - refer to folder synthetic-data 
 	- of 500 customers (customers.csv) and 3 months of transactions (transactions.csv, into one graph
 + How to Import
-	- Either use http://data-importer.graphapp.io/
+	- Either use http://data-importer.graphapp.io/ to get the data into default neo4j database
 	- Or refer to folder import, and use import.cypher to populate the neo4j database with the set of commands that the data-importer generated
 + How to label by month, and then shard the data across 3 shards - refer to the folder shard-the-data
 	1) run shard-the-dataset.cypher 
-	2) copy-the-data-to-shards
-	3) create-customer-shard-constraints (these commands are outputted when you copy-the-shard-data)
+	2) perform admin commands in the copy-the-data-to-shards AS user neo4j (dont use ROOT)
+	3) create-customer-shard-constraints (these commands are outputted to console when you copy-the-shard-data)
 	4) create-transaction-shard-constraints
 + Perform sample queries using fabric - refer to the file Queries
-+ Some basic Troubleshooting
++ Some basic Troubleshooting if you have any problems
 
 # synthetic data generator (transaction-generator)
 Has been provided in the form of a Jupyter Notebook.
@@ -40,6 +43,8 @@ Notes on the generator
 
 
 # ToDO
++ Public version of the CL deck
++ More notes on running the K8s / Minikube
 + Create structured transactions
 + Create a query to find the fraud
 + More adv. cypher queries

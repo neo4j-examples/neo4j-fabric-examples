@@ -1,5 +1,5 @@
 # docker run command
-docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/set-password -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes -e NEO4J_fabric_database_name=fabric -e NEO4J_fabric_graph_1_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_1_database=customer -e NEO4J_fabric_graph_1_name=customer -e NEO4J_fabric_graph_2_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_2_database=shard7 -e NEO4J_fabric_graph_2_name=july -e NEO4J_fabric_graph_3_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_3_database=shard8 -e NEO4J_fabric_graph_3_name=aug -e NEO4J_fabric_graph_4_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_4_database=shard9 -e NEO4J_fabric_graph_4_name=sept neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
+docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/set-password -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes -e NEO4J_fabric_database_name=fabric -e NEO4J_fabric_graph_1_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_1_database=customer -e NEO4J_fabric_graph_1_name=customer -e NEO4J_fabric_graph_2_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_2_database=shard7 -e NEO4J_fabric_graph_2_name=july -e NEO4J_fabric_graph_3_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_3_database=shard8 -e NEO4J_fabric_graph_3_name=aug -e NEO4J_fabric_graph_4_uri=neo4j://localhost:7687 -e NEO4J_fabric_graph_4_database=shard9 -e NEO4J_fabric_graph_4_name=sept neo4j:4.4.0-enterprise
 
 #to get the name of the container
 docker ps 
@@ -18,17 +18,10 @@ docker run -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/set-password -e NEO4J_A
 # so in docker just used the certificates directory
 # helm / docker need to figure out a way to create a subdirectory
 
-#docker container thirsty_cohen preped and ready for Aura
-docker start thirsty_cohen
+#get the name of the container
+docker ps 
 
-# Run 4.3.7
-neo4j:4.3.7-enterprise
-
-# Run experimental 4.4
-neo4j/neo4j-experimental:4.4.0-alpha01-enterprise
-
-# Run 4.4.0 release version - when it has been published by Docker
-neo4j:4.4.0-enterprise
+docker start container_name
 
 
 
