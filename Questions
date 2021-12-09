@@ -2,7 +2,9 @@
 Can you have multiple versions of neo4j within a fabric? 
 Yes you can, but the cypher code /syntax has to be compatible with all members of fabric ie. lowest common version
 
-Docs state
+Is RBAC supported within Fabric, yes it is, but must be maintained across all the DBMS
+
+Following from our product docs
 
 "Database compatibility
 Fabric is part of Neo4j DBMS and does not require any special installation or plugin. Fabric graphs can be associated to databases available on Neo4j DBMS version 4.1 or greater, including AuraDB."
@@ -20,3 +22,21 @@ Fabric does not support issuing Cypher administration commands, on, or through t
 
 DBMS mode
 The DBMS hosting the Fabric virtual database cannot be part of a Causal Cluster: it can only be a DBMS with dbms.mode=SINGLE.
+
+
+
+
+
+---Cypher QUESTIONs
+
+Why doesnt this just return the date time of the max transaction, instead get a list of transactions
+
+UNWIND fabric.graphIds() AS graphId
+CALL {
+  USE fabric.graph(graphId)
+  MATCH (t:Transaction)
+  RETURN t.amount AS amount, t.id as id, t.dateTime as dateTime
+}
+RETURN max(amount) AS maxT, dateTime
+
+Can we provide a fabric function for unique id that can be used?

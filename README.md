@@ -41,7 +41,16 @@ Notes on the generator
 
 # ToDO
 + Create structured transactions
++ Create a query to find the fraud
++ Demo use cases for fabric with Aura
+- federated queries
+- E.g cut over from on prem to cloud (question in CL session)
+- use for migration
+- use for DR
 + More adv. cypher queries
 + Federated databases for fraud rings
 - Multi-bank system generator with stolen identities generator 
+- Fraud ring data set
+- Synthetic and stolen identities
 + Getting ready for 5.0
+
