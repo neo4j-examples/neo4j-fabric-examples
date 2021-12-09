@@ -28,8 +28,20 @@ It can be used to
 + Change the upper limit of the no. of random transactions created between Trinity a/cs
 + Change the currency, default USD
 
+Generates the following files 
++ output/customers.csv
++ output/transactions.csv
+
 Notes on the generator
 + Uses faker python module to generate the data
 + It is representative but not accurate data
 + for example Sort-code isnt used, names dont match email addresses
++ Does not generate structured transactions
 
+
+# ToDO
++ Create structured transactions
++ More adv. cypher queries
++ Federated databases for fraud rings
+- Multi-bank system generator with stolen identities generator 
++ Getting ready for 5.0
