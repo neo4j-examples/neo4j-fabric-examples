@@ -20,6 +20,8 @@ Shows you how to
 	3) create-customer-shard-constraints (these commands are outputted to console when you copy-the-shard-data)
 	4) create-transaction-shard-constraints
 + Perform sample queries using fabric - refer to the file Queries
+	- Please NOTE that the queries use the new syntax in 4.4 - Node Patterns: predicates on properties
+	- IF you decide to run neo4j 4.3 instead, or want a mix of 4.3 and 4.4 databases you will need to modify the queries
 + Some basic Troubleshooting if you have any problems
 
 # synthetic data generator (transaction-generator)
